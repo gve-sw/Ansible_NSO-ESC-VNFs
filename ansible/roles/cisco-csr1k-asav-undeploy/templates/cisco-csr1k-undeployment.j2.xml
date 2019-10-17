@@ -1,0 +1,14 @@
+<config>
+<nfvo xmlns="http://tail-f.com/pkg/nfvo">
+        <vnfr>
+            <esc xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">
+                <vnf-deployment xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"
+                                nc:operation="delete">
+                    <tenant>{{ instance.tenant }}</tenant>
+                    <deployment-name>{{ instance.name }}</deployment-name>
+                    <esc>{{ instance.esc_device }}</esc>
+                </vnf-deployment>
+            </esc>
+        </vnfr>
+    </nfvo>
+    </config>

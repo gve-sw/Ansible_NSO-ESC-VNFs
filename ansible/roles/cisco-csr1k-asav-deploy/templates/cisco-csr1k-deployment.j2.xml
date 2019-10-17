@@ -1,0 +1,64 @@
+<vnf-deployment>
+    <tenant>{{ instance.tenant }}</tenant>
+    <deployment-name>{{ instance.name }}</deployment-name>
+    <esc>{{ instance.esc_device }}</esc>
+    <username>admin</username>
+    <vnfr>
+        <id>{{ instance.name }}</id>
+        <vnfd-flavor>basic</vnfd-flavor>
+        <instantiation-level>basic</instantiation-level>
+        <vdu>
+            <id>csr</id>
+            <bootup-time>300</bootup-time>
+            <recovery-wait-time>120</recovery-wait-time>
+            <image-name>{{ instance.image_name }}</image-name>
+            <flavor-name>{{ flavor.name }}</flavor-name>
+            <day0>
+                <destination>iosxe_config.txt</destination>
+                <data>{{ instance.day_0_url }}</data>
+                <variable>
+                    <name>ADMIN_PWD</name>
+                    <value>cisco</value>
+                </variable>
+                <variable>
+                    <name>HOSTNAME</name>
+                    <value>{{ instance.name }}</value>
+                </variable>
+            </day0>
+            <internal-connection-point>
+                <id>left</id>
+                <connection-point-address>
+                    <start>{{ instance.outside_ip }}</start>
+                    <end>{{ instance.outside_ip }}</end>
+                </connection-point-address>
+            </internal-connection-point>
+            <internal-connection-point>
+                <id>mgmt</id>
+                <connection-point-address>
+                    <start>{{ instance.mgmt_ip }}</start>
+                    <end>{{ instance.mgmt_ip }}</end>
+                </connection-point-address>
+            </internal-connection-point>
+            <internal-connection-point>
+                <id>right</id>
+                <connection-point-address>
+                    <start>{{ instance.inside_ip }}</start>
+                    <end>{{ instance.inside_ip }}</end>
+                </connection-point-address>
+            </internal-connection-point>
+        </vdu>
+        <vnfd-connection-point>
+            <id>left-ext</id>
+            <vlr>{{ instance.outside_net }}</vlr>
+        </vnfd-connection-point>
+        <vnfd-connection-point>
+            <id>mgmt-ext</id>
+            <vlr>{{ instance.mgmt_net }}</vlr>
+        </vnfd-connection-point>
+        <vnfd-connection-point>
+            <id>right-ext</id>
+            <vlr>{{ instance.inside_net }}</vlr>
+        </vnfd-connection-point>
+    </vnfr>
+</vnf-deployment>
+

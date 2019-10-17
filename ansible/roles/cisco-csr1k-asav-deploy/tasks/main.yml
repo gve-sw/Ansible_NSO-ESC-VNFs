@@ -1,0 +1,127 @@
+  - name: Imports variable files
+    include_vars: vars/main.yml
+
+
+  # Install the requirements needed for the ansible modules and the python scripts
+  - name: Installing pip requirements
+    pip:
+      requirements: "{{ role_path }}/requirements.txt"
+    delegate_to: localhost
+
+
+  # If not present, create the flavor with the parameters in the vars/main.yml file
+  #- name: Making sure flavor {{ flavor.name }} exists
+  #  os_nova_flavor:
+  #    auth: "{{ openstack_credentials }}"
+  #    state: present
+  #    name: "{{ flavor.name }}"
+  #    ram: "{{ flavor.ram }}"
+  #    disk: "{{ flavor.disk }}"
+  #    vcpus: "{{ flavor.vcpus }}"
+      #extra_specs: "{{ flavor.extra_specs }}"
+  #  delegate_to: localhost
+
+    # If not present, create the flavor with the parameters in the vars/main.yml file
+  #- name: Make sure flavor {{ asav_flavor.name }} exists
+  #  os_nova_flavor:
+  #    auth: "{{ openstack_credentials }}"
+  #    state: present
+  #    name: "{{ asav_flavor.name }}"
+  #    ram: "{{ asav_flavor.ram }}"
+  #    disk: "{{ asav_flavor.disk }}"
+  #    vcpus: "{{ asav_flavor.vcpus }}"
+      #extra_specs: "{{ flavor.extra_specs }}"
+  #  delegate_to: localhost
+
+  # If not present, create the netfconf-subscription for the selected esc
+  - name: Making sure nfvo netconf-subscriptions are set to esc
+    uri:
+      url: "http://{{ nso.api }}:8080/api/running/nfvo"
+      method: POST
+      user: "{{ nso.username }}"
+      password: "{{ nso.password }}"
+      return_content: yes
+      force_basic_auth: yes
+      validate_certs: no
+      status_code: 201,409
+      timeout: 60
+      headers:
+        Content-Type: "application/vnd.yang.data+xml"
+        Accept: "application/vnd.yang.data+json"
+      body: "{{ lookup('template', role_path + '/templates/cisco-esc-netconf-subscription.j2.xml') }}"
+    register: results
+    changed_when: "results.status == 201"
+    delegate_to: localhost
+
+
+  # This is done using a python script due to a bug. See the README.md file for more information
+  #- name: Making sure VNFD is present in NSO
+  #  command: python {{ role_path }}/python-scripts/create_vnfd.py
+  #  delegate_to: localhost
+
+  - name: Make sure csr1k VNFD is present in NSO
+    netconf_config:
+      host: "{{ nso.api }}"
+      username: "{{ nso.username }}"
+      password: "{{ nso.password }}"
+      xml: "{{ lookup('template', role_path + '/templates/cisco-csr1k-vnfd.j2.xml') }}"
+      look_for_keys: False
+      allow_agent: False
+      hostkey_verify: False
+      port: 2022
+    delegate_to: localhost
+
+
+  - name: Make sure asav VNFD is present in NSO
+    netconf_config:
+      host: "{{ nso.api }}"
+      username: "{{ nso.username }}"
+      password: "{{ nso.password }}"
+      xml: "{{ lookup('template', role_path + '/templates/cisco-asav-vnfd.j2.xml') }}"
+      look_for_keys: False
+      allow_agent: False
+      hostkey_verify: False
+      port: 2022
+    delegate_to: localhost
+
+
+  # Creates the CSR using the NSO rest API
+  - name: Creating CSR1K
+    uri:
+      url: "http://{{ nso.api }}:8080/api/running/nfvo/vnfr/esc"
+      method: POST
+      user: "{{ nso.username }}"
+      password: "{{ nso.password }}"
+      return_content: yes
+      force_basic_auth: yes
+      validate_certs: no
+      status_code: 201,409
+      timeout: 60
+      headers:
+        Content-Type: "application/vnd.yang.data+xml"
+        Accept: "application/vnd.yang.data+json"
+      body: "{{ lookup('template', role_path + '/templates/cisco-csr1k-deployment.j2.xml') }}"
+    register: results
+    delegate_to: localhost
+    changed_when: "results.status == 201"
+
+  - name: Create ASAv
+    uri:
+      url: "http://{{ nso.api }}:8080/api/running/nfvo/vnfr/esc"
+      method: POST
+      user: "{{ nso.username }}"
+      password: "{{ nso.password }}"
+      return_content: yes
+      force_basic_auth: yes
+      validate_certs: no
+      status_code: 201,409
+      timeout: 60
+      headers:
+        Content-Type: "application/vnd.yang.data+xml"
+        Accept: "application/vnd.yang.data+json"
+      body: "{{ lookup('template', role_path + '/templates/cisco-asav-deployment.j2.xml') }}"
+    register: results
+    delegate_to: localhost
+    changed_when: "results.status == 201"
+
+

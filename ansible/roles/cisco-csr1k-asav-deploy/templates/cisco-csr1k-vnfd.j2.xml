@@ -1,0 +1,82 @@
+<config>
+    <nfvo xmlns="http://tail-f.com/pkg/nfvo">
+        <vnfd>
+            <id>csr1k</id>
+            <provider>cisco</provider>
+            <version>1.0</version>
+            <vdu>
+                <id>csr</id>
+                <internal-connection-point>
+                    <id>left</id>
+                    <external-connection-point>left-ext</external-connection-point>
+                    <interface-id xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">1</interface-id>
+                </internal-connection-point>
+                <internal-connection-point>
+                    <id>mgmt</id>
+                    <external-connection-point>mgmt-ext</external-connection-point>
+                    <interface-id xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">0</interface-id>
+                </internal-connection-point>
+                <internal-connection-point>
+                    <id>right</id>
+                    <external-connection-point>right-ext</external-connection-point>
+                    <interface-id xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">2</interface-id>
+                </internal-connection-point>
+                <software-image>
+                    <container-format>bare</container-format>
+                    <disk-format>qcow2</disk-format>
+                    <image>csr1000v-k9.16.09.01</image>
+                    <additional-setting xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">
+                        <id>disk_bus</id>
+                        <value>virtio</value>
+                    </additional-setting>
+                    <additional-setting xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">
+                        <id>e1000_net</id>
+                        <value>false</value>
+                    </additional-setting>
+                    <additional-setting xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">
+                        <id>serial_console</id>
+                        <value>true</value>
+                    </additional-setting>
+                    <additional-setting xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">
+                        <id>virtio_net</id>
+                        <value>true</value>
+                    </additional-setting>
+                </software-image>
+                <device-type xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">
+                    <cli>
+                        <ned-id>cisco-ios</ned-id>
+                    </cli>
+                </device-type>
+                <day0 xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">
+                    <destination>iosxe_config.txt</destination>
+                </day0>
+            </vdu>
+            <external-connection-point>
+                <id>left-ext</id>
+            </external-connection-point>
+            <external-connection-point>
+                <id>mgmt-ext</id>
+                <management xmlns="http://tail-f.com/pkg/tailf-nfvo-esc"/>
+            </external-connection-point>
+            <external-connection-point>
+                <id>right-ext</id>
+            </external-connection-point>
+            <deployment-flavor>
+                <id>basic</id>
+                <vdu-profile>
+                    <vdu>csr</vdu>
+                    <min-number-of-instances>1</min-number-of-instances>
+                    <max-number-of-instances>1</max-number-of-instances>
+                </vdu-profile>
+                <instantiation-level>
+                    <id>basic</id>
+                    <vdu-level>
+                        <vdu>csr</vdu>
+                        <number-of-instances>1</number-of-instances>
+                    </vdu-level>
+                </instantiation-level>
+                <default-instantiation-level>basic</default-instantiation-level>
+            </deployment-flavor>
+        </vnfd>
+    </nfvo>
+</config>

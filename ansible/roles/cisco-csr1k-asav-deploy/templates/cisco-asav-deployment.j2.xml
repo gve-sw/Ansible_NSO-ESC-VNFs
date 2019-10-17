@@ -1,0 +1,63 @@
+<vnf-deployment>
+    <tenant>{{ instance.tenant }}</tenant>
+    <deployment-name>{{ instance.asav_name }}</deployment-name>
+    <esc>{{ instance.esc_device }}</esc>
+    <username>admin</username>
+    <vnfr>
+        <id>{{ instance.asav_name }}</id>
+        <vnfd-flavor>basic</vnfd-flavor>
+        <instantiation-level>basic</instantiation-level>
+        <vdu>
+            <id>asav</id>
+            <bootup-time>1000</bootup-time>
+            <recovery-wait-time>240</recovery-wait-time>
+            <image-name>{{ instance.asav_image_name }}</image-name>
+            <flavor-name>{{ asav_flavor.name }}</flavor-name>
+            <day0>
+                <destination>asav_config.txt</destination>
+                <url>{{ instance.asav_day_0_url }}</url>
+                <variable>
+                    <name>ADMIN_PWD</name>
+                    <value>{{ instance.admin_password }}</value>
+                </variable>
+                <variable>
+                    <name>HOSTNAME</name>
+                    <value>{{ instance.asav_name }}</value>
+                </variable>
+            </day0>
+            <internal-connection-point>
+                <id>out</id>
+                <connection-point-address>
+                    <start>{{ instance.asav_outside_ip }}</start>
+                    <end>{{ instance.asav_outside_ip }}</end>
+                </connection-point-address>
+            </internal-connection-point>
+            <internal-connection-point>
+                <id>mgmt</id>
+                <connection-point-address>
+                    <start>{{ instance.asav_mgmt_ip }}</start>
+                    <end>{{ instance.asav_mgmt_ip }}</end>
+                </connection-point-address>
+            </internal-connection-point>
+            <internal-connection-point>
+                <id>right</id>
+                <connection-point-address>
+                    <start>{{ instance.asav_inside_ip }}</start>
+                    <end>{{ instance.asav_inside_ip }}</end>
+                </connection-point-address>
+            </internal-connection-point>
+      </vdu>
+        <vnfd-connection-point>
+            <id>out-ext</id>
+            <vlr>{{ instance.asav_outside_net }}</vlr>
+        </vnfd-connection-point>
+        <vnfd-connection-point>
+            <id>mgmt-ext</id>
+            <vlr>{{ instance.mgmt_net }}</vlr>
+        </vnfd-connection-point>
+        <vnfd-connection-point>
+            <id>right-ext</id>
+            <vlr>{{ instance.inside_net }}</vlr>
+        </vnfd-connection-point>
+    </vnfr>
+</vnf-deployment>

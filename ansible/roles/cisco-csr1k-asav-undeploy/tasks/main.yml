@@ -1,0 +1,57 @@
+  - name: Imports variable files
+    include_vars: vars/main.yml
+
+  # Undeploy CSR1k
+  - name: Undeploy CSR1k
+    netconf_config:
+      host: "{{ nso.api }}"
+      username: "{{ nso.username }}"
+      password: "{{ nso.password }}"
+      xml: "{{ lookup('template', role_path + '/templates/cisco-csr1k-undeployment.j2.xml') }}"
+      look_for_keys: False
+      allow_agent: False
+      hostkey_verify: False
+      port: 2022
+    delegate_to: localhost
+
+  # Undeploy ASAv
+  - name: Undeploy ASAv
+    netconf_config:
+      host: "{{ nso.api }}"
+      username: "{{ nso.username }}"
+      password: "{{ nso.password }}"
+      xml: "{{ lookup('template', role_path + '/templates/cisco-asav-undeployment.j2.xml') }}"
+      look_for_keys: False
+      allow_agent: False
+      hostkey_verify: False
+      port: 2022
+    delegate_to: localhost
+
+  # Delete VNFD CSR1k
+  - name: Delete VNFD CSR1K
+    netconf_config:
+      host: "{{ nso.api }}"
+      username: "{{ nso.username }}"
+      password: "{{ nso.password }}"
+      xml: "{{ lookup('template', role_path + '/templates/cisco-csr1k-vnfd-delete.j2.xml') }}"
+      look_for_keys: False
+      allow_agent: False
+      hostkey_verify: False
+      port: 2022
+    delegate_to: localhost
+
+  # Delete VNFD ASAv
+  - name: Delete VNFD ASAv
+    netconf_config:
+      host: "{{ nso.api }}"
+      username: "{{ nso.username }}"
+      password: "{{ nso.password }}"
+      xml: "{{ lookup('template', role_path + '/templates/cisco-asav-vnfd-delete.j2.xml') }}"
+      look_for_keys: False
+      allow_agent: False
+      hostkey_verify: False
+      port: 2022
+    delegate_to: localhost
+
+
+

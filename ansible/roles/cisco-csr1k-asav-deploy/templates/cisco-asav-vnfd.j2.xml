@@ -1,0 +1,62 @@
+<config>
+    <nfvo xmlns="http://tail-f.com/pkg/nfvo">
+        <vnfd>
+            <id>asav</id>
+            <provider>cisco</provider>
+            <version>1.0</version>
+            <vdu>
+                <id>asav</id>
+                <internal-connection-point>
+                    <id>out</id>
+                    <external-connection-point>out-ext</external-connection-point>
+                    <interface-id xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">1</interface-id>
+                </internal-connection-point>
+                <internal-connection-point>
+                    <id>mgmt</id>
+                    <external-connection-point>mgmt-ext</external-connection-point>
+                    <interface-id xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">0</interface-id>
+                </internal-connection-point>
+                <internal-connection-point>
+                    <id>right</id>
+                    <external-connection-point>right-ext</external-connection-point>
+                    <interface-id xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">2</interface-id>
+                </internal-connection-point>
+                <software-image>
+                    <container-format>bare</container-format>
+                    <disk-format>qcow2</disk-format>
+                    <image>{{ instance.asav_image_name }}</image>
+                </software-image>
+                <day0 xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">
+                    <destination>asav_config.txt</destination>
+                    <mandatory/>
+                </day0>
+            </vdu>
+            <external-connection-point>
+                <id>out-ext</id>
+            </external-connection-point>
+            <external-connection-point>
+                <id>mgmt-ext</id>
+                <management xmlns="http://tail-f.com/pkg/tailf-nfvo-esc"/>
+            </external-connection-point>
+            <external-connection-point>
+                <id>right-ext</id>
+            </external-connection-point>
+            <deployment-flavor>
+                <id>basic</id>
+                <vdu-profile>
+                    <vdu>asav</vdu>
+                    <min-number-of-instances>1</min-number-of-instances>
+                    <max-number-of-instances>1</max-number-of-instances>
+                </vdu-profile>
+                <instantiation-level>
+                    <id>basic</id>
+                    <vdu-level>
+                        <vdu>asav</vdu>
+                        <number-of-instances>1</number-of-instances>
+                    </vdu-level>
+                </instantiation-level>
+                <default-instantiation-level>basic</default-instantiation-level>
+            </deployment-flavor>
+        </vnfd>
+    </nfvo>
+</config>

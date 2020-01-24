@@ -1,0 +1,8 @@
+<config>
+    <nfvo xmlns="http://tail-f.com/pkg/nfvo">
+        <vnfd xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"
+              nc:operation="delete">
+            <id>{{ instance.name }}</id>
+        </vnfd>
+    </nfvo>
+</config>

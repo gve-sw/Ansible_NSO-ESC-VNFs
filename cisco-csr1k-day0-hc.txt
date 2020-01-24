@@ -1,0 +1,67 @@
+!
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+!
+!
+hostname CSR
+!
+enable secret cisco
+!
+!
+line con 0
+exec-timeout 30 0
+!
+line vty 0 15
+ exec-timeout 30 0
+ transport input ssh
+ transport output none
+!
+ip name-server vrf Mgmt-intf x.x.x.x
+ip name-server x.x.x.x
+!
+!
+ip domain name server.com
+!
+vrf definition Mgmt-intf
+address-family ipv4
+exit-address-family
+!
+interface GigabitEthernet 1
+ description mgmt interface
+ vrf forwarding Mgmt-intf
+ ip address x.x.x.x 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet 2
+ description outside interface
+ ip address 1.1.0.10 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet 3
+ description inside interface
+ ip address 2.2.0.10 255.255.255.0
+ no shutdown
+!
+!
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 x.x.x.x
+ip route 0.0.0.0 0.0.0.0 1.1.0.1
+!
+!
+aaa new-model
+!
+username admin privilege 15 password cisco
+!
+!
+ip domain lookup
+ip tftp source-interface GigabitEthernet 1
+ip ssh version 2
+ip ssh source-interface GigabitEthernet 1
+no ip ssh stricthostkeycheck
+!
+!
+crypto key generate rsa modulus 2048 general-keys
+!
+do write memory
+!
+!
+end

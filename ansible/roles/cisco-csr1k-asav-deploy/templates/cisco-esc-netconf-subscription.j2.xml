@@ -1,0 +1,7 @@
+<settings-esc xmlns="http://tail-f.com/pkg/tailf-nfvo-esc">
+    <netconf-subscription>
+        <esc-device>
+            <name>{{ instance.esc_device }}</name>
+        </esc-device>
+    </netconf-subscription>
+</settings-esc>

@@ -1,0 +1,111 @@
+# OpenStack info
+openstack_credentials:
+  auth_url: "http://x.x.x.x:5000/v3" #add openstack IP
+  username: xxxxxx
+  password: yyyyyyyy
+  project_name: admin
+
+flavor:
+  #name: cisco-csr1k-default-bench
+  name: CSR_vnfd_image_spak
+  ram: 4096
+  disk: 0
+  vcpus: 1
+  #extra_specs:                 # needed if Mercury configured for huge_mem pages
+    #hw:mem_page_size: 2048
+    #hw:numa_nodes: 1
+
+asav_flavor:
+  name: asav941
+  ram: 2024
+  disk: 0
+  vcpus: 1
+
+# nso info
+nso:
+  # NSO name or api 
+  api: x.x.x.x    # add NSO IP
+
+  # NSO User. TODO: This should be in a secret file
+  username: xxxxx
+  
+  # NSO Password. TODO: This should be in a secret file
+  password: yyyyyy
+
+
+# service instance info
+instance:
+  # Deployment name
+  name: csr1k
+
+  # ESC device name in 
+  esc_device: esc0
+
+  # Openstack Tenant
+  tenant: admin
+
+  # Management network, recommended to be accesible to ESC
+  mgmt_net: mgmt_spak
+
+  mgmt_ip: 10.10.100.100
+
+  # Left or outside network to plug the second csr interface
+  outside_net: vlan210
+
+  # Left or outside network ip that the csr will use
+  outside_ip: 192.168.210.100
+
+  # Right or inside network to plug the third csr interface
+  inside_net: inside_spak
+
+  # Right or inside network ip that the csr will use
+  inside_ip: 192.168.100.100
+
+  # Day 0 config URL. You must include in this configuration static routes that will return the packets to the traffic generator. This has to match with the configured values under 'tg'
+  # For instance, if your tg.outside_ip=1.1.0.100 and tg.inside_ip=2.2.0.100 and tg.internal_net_1=20.0.0.0/8 and tg.internal_net_2=21.0.0.0/8 
+  # you need to add the following config:
+ 
+  # ip route 20.0.0.0 255.0.0.0 2.2.0.100
+  # ip route 21.0.0.0 255.0.0.0 1.1.0.100
+  day_0_url: http://x.x.x.x/vnf/cisco-csr1k-day0-hc.txt  # add server IP where txt is stored
+
+  # Openstack flavor. Will be created if not present
+  #flavor_name: cisco-csr1kv-large
+
+  # Openstack image. Must be present in openstack before running the playbook
+  image_name: CSR_vnfd_image_spak
+
+  # Deployment name
+  asav_name: asav
+
+  # Management IP, recommended to be accessible to ESC
+  asav_mgmt_ip: 10.10.100.110
+
+  # Management Netmask
+  asav_mgmt_netmask: 255.255.255.0
+
+  asav_outside_net: vlan220
+
+  # Left or outside network ip that the ASAv will use
+  asav_outside_ip: 172.16.220.110
+
+
+  asav_inside_net: inside_spak
+
+  # Right or inside network ip that the ASAv will use
+  asav_inside_ip: 192.168.100.110
+
+  # Day 0 config URL. You must include in this configuration static routes that will return the packets to the traffic generator. This has to match with the configured values under 'tg'
+  # For instance, if your tg.outside_ip=1.1.0.100 and tg.inside_ip=2.2.0.100 and tg.internal_net_1=20.0.0.0/8 and tg.internal_net_2=21.0.0.0/8
+  # you need to add the following config:
+
+  # ip route 20.0.0.0 255.0.0.0 2.2.0.100
+  # ip route 21.0.0.0 255.0.0.0 1.1.0.100
+  asav_day_0_url: http://x.x.x.x/vnf/cisco-asav-day0.txt  # add server IP where txt is stored
+
+  # Openstack image. Must be present in openstack before running the playbook
+  asav_image_name: asav941
+
+  # Password for the admin user in the ASAv
+  admin_password: cisco
+

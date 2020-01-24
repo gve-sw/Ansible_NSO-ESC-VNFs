@@ -1,0 +1,48 @@
+!
+hostname asav-1
+!
+interface GigabitEthernet0/0
+ nameif outside
+ security-level 100
+ ip address 172.16.100.20 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet0/1
+ nameif inside
+ security-level 100
+ ip address 192.168.100.20 255.255.255.0
+ no shutdown
+!
+interface Management0/0
+ nameif management
+ security-level 100
+ ip address x.x.x.x 255.255.255.0
+ no shutdown
+!
+username admin password cisco
+username cisco password cisco
+enable password cisco
+crypto key generate rsa modulus 1024
+!
+route management 0.0.0.0 0.0.0.0 x.x.x.x
+!
+aaa authentication ssh console LOCAL
+http server enable
+!
+http 0.0.0.0 0.0.0.0 management
+telnet 0.0.0.0 0.0.0.0 management
+ssh 0.0.0.0 0.0.0.0 management
+!
+ssh key-exchange group dh-group14-sha1
+!
+dns domain-lookup management
+dns name-server x.x.x.x
+!
+license smart register idtoken SMART_TOKEN
+license smart
+ feature tier standard
+ throughput level 2G
+!
+same-security-traffic permit inter-interface
+same-security-traffic permit intra-interface
+!

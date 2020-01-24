@@ -1,0 +1,25 @@
+# nso info
+nso:
+  # NSO name or api
+  api: x.x.x.x  # add NSO IP
+
+  # NSO User. TODO: This should be in a secret file
+  username: xxxxxx
+
+  # NSO Password. TODO: This should be in a secret file
+  password: yyyyyy
+
+
+# service instance info
+instance:
+  # Deployment name
+  name: csr1k
+
+  # ESC device name in
+  esc_device: esc0
+
+  # Openstack Tenant
+  tenant: admin
+
+  # Deployment name
+  asav_name: asav

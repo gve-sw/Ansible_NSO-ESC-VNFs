@@ -1,0 +1,16 @@
+#localhost    ansible_connection=local
+
+# if using Ansible with python virtualenv, use localhost option below
+# with change to your python executable
+localhost    ansible_connection=local ansible_python_interpreter=/Users/jamah/sites/vnf-cisco-csr1k/bin/python
+
+nso          ansible_host=x.x.x.x
+
+
+### cisco-csr1k-*.yaml hosts ###
+
+# Replace for your cisco vim mgmt node
+[cisco-vim-mgmt-node]
+x.x.x.x #replace with openstack IP
+
+
